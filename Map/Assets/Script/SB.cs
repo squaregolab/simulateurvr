@@ -27,12 +27,13 @@ using System;
 
 using System.Threading;
 
-public class UnitySerialPort : MonoBehaviour 
+public class SB : MonoBehaviour 
 {
 	// Init a static reference if script is to be accessed by others when used in a 
 	// none static nature eg. its dropped onto a gameObject. The use of "Instance"
 	// allows access to public vars as such as those available to the unity editor.
-	public static UnitySerialPort Instance;
+	public static SB Instance;
+	private ARDTest ARDTest;
 
 	#region Properties
 
@@ -151,6 +152,7 @@ public class UnitySerialPort : MonoBehaviour
 	/// </summary>
 	void Start()
 	{
+		ARDTest = ARDTest.Instance;
 		// Population of comport list via system.io.ports
 		PopulateComPorts();
 
@@ -213,7 +215,7 @@ public class UnitySerialPort : MonoBehaviour
 			// Failed to update serial data
 			Debug.Log("Error 7: " + ex.Message.ToString());
 		}
-		//Debug.Log (RawData);
+		SerialPort.WriteLine (ARDTest.RawData);
 	}
 
 	/// <summary>

@@ -27,18 +27,19 @@ using System;
 
 using System.Threading;
 
-public class UnitySerialPort : MonoBehaviour 
+public class ARDTest : MonoBehaviour 
 {
 	// Init a static reference if script is to be accessed by others when used in a 
 	// none static nature eg. its dropped onto a gameObject. The use of "Instance"
 	// allows access to public vars as such as those available to the unity editor.
-	public static UnitySerialPort Instance;
+	public static ARDTest Instance;
 
 	#region Properties
 
 	// The serial port
 	public SerialPort SerialPort;
-
+	Rigidbody rb;
+	private float acc, lastacc;
 	// The script update can run as either a seperate thread
 	// or as a standard coroutine. This can be selected via 
 	// the unity editor.
@@ -151,6 +152,7 @@ public class UnitySerialPort : MonoBehaviour
 	/// </summary>
 	void Start()
 	{
+		rb = GetComponent<Rigidbody>();
 		// Population of comport list via system.io.ports
 		PopulateComPorts();
 
@@ -167,6 +169,7 @@ public class UnitySerialPort : MonoBehaviour
 	/// </summary>
 	void Update()
 	{
+
 		// Check if the serial port exists and is open
 		if (SerialPort == null || SerialPort.IsOpen == false) { return; }
 
@@ -213,8 +216,12 @@ public class UnitySerialPort : MonoBehaviour
 			// Failed to update serial data
 			Debug.Log("Error 7: " + ex.Message.ToString());
 		}
-		//Debug.Log (RawData);
+		acc = (rb.velocity.magnitude - lastacc)/ Time.fixedDeltaTime;
+		lastacc = rb.velocity.magnitude;
+		Debug.Log (System.Math.Round(rb.transform.rotation.x*100,0).ToString()+"."+acc.ToString()); //*+ "." + (rb.velocity.x / 3000 * 100)*/);
+			//SerialPort.WriteLine (System.Math.Round(rb.transform.rotation.x*100,0).ToString()+"."+(rb.velocity.x / 3000 * 100).ToString());
 	}
+
 
 	/// <summary>
 	/// Clean up the thread and close the port on application close event.

@@ -23,7 +23,7 @@ using System.Collections;
 
 public class SerialManager : MonoBehaviour 
 {
-	private UnitySerialPort unitySerialPort;
+	private ARDTest ARDTest;
 	public static SerialManager Instance;
 
 	void Awake ()
@@ -33,12 +33,12 @@ public class SerialManager : MonoBehaviour
 
 	void Start () 
 	{
-		unitySerialPort = UnitySerialPort.Instance;
+		ARDTest = ARDTest.Instance;
 	}
 
 	void Update () 
 	{
-		Debug.Log (unitySerialPort.RawData);
+		Debug.Log (ARDTest.RawData);
 	}
 
 /*	void OnGUI ()

@@ -10,12 +10,12 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rb;
     private float vertical, horizontal;
-    private GameObject[] cheminParcours;
+    
     //Valeur des sticks
     private float moveRotation;
     private float moveVertical;
 	private float manetteRot;
-    private float gachette;
+    private float gachetteAr;
     private float Boost;
     private float moveBas;
     private float RotBas;
@@ -24,15 +24,17 @@ public class PlayerController : MonoBehaviour
     private float RotDroite;
     private float stick2dg;
     private float stick2hb;
-    private float temps;
+    
 	/////////////////
-    //private int score;
+    //Parcours
     private bool start;
-    private bool PsgV1 = false, PsgV2 = false;
-	/////////////////
-	//Lumiere
-	private bool lum;
-	public GameObject lumiere;
+	private int malusTemps = 0;
+	public int NombreParcours;
+	private float temps;
+	private GameObject[] cheminParcours;
+	public GameObject Depart;
+	public GameObject finish;
+	private GameObject[] respawn;
 	/////////////////
     //Multiplicateur de vitesse
     public float speed;
@@ -49,6 +51,7 @@ public class PlayerController : MonoBehaviour
 	private UnitySerialPort unitySerialPort;
 	public static PlayerController Instance;
 	private float accelerateur;
+
 	/////////////////
     /* public GameObject Boussole;*/
 
@@ -62,7 +65,8 @@ public class PlayerController : MonoBehaviour
         rb.useGravity = false;
         start = false;
 		Instance = this;
-        // cheminParcours = GameObject.FindGameObjectsWithTag("Finish");
+        cheminParcours = GameObject.FindGameObjectsWithTag("Parcours");
+		respawn = GameObject.FindGameObjectsWithTag("Respawn");
         //score = 0;
         /*countText.text = "Score : " + countText.ToString();
         WinText.text = "";
@@ -86,7 +90,7 @@ public class PlayerController : MonoBehaviour
         //Recupere valeur// 
         moveRotation = Input.GetAxisRaw("Horizontal");
         moveVertical = Input.GetAxisRaw("Vertical");
-        gachette = Input.GetAxisRaw("A");
+        gachetteAr = Input.GetAxisRaw("A");
         Boost = Input.GetAxisRaw("B");
         moveBas = Input.GetAxisRaw("Y");
         RotBas = Input.GetAxisRaw("X");
@@ -121,12 +125,13 @@ public class PlayerController : MonoBehaviour
             rb.AddForce(appliedHoverForce, ForceMode.Acceleration);
         }
 		bool gachette = Mathf.Abs(Input.GetAxis("Y")) > 0.2F || Mathf.Abs(Input.GetAxis("Y")) > 0.2F;
-		if (gachette && lum) {
-			lumiere.SetActive(true);
-			lum = false;
-		} else if (gachette && !lum) {
-			lumiere.SetActive (false);
-			lum = true;
+		if (gachette) {
+			foreach (GameObject i in cheminParcours) {
+				i.SetActive(true);
+			}
+
+			Depart.SetActive (true);
+			finish.SetActive (true);
 		}
     }
     void deplacement()
@@ -139,9 +144,17 @@ public class PlayerController : MonoBehaviour
         bool stickMove = Mathf.Abs(Input.GetAxis("Vertical")) > 0.2F || Mathf.Abs(Input.GetAxis("Vertical")) > 0.2F;
         bool stickVue = Mathf.Abs(Input.GetAxis("Stick2")) > 0.2F || Mathf.Abs(Input.GetAxis("Stick2")) > 0.2F;
 		bool boostPressed = Mathf.Abs(Input.GetAxis("B")) > 0.2F || Mathf.Abs(Input.GetAxis("B")) > 0.2F;
-
+		bool b_gachetteAr = Mathf.Abs(Input.GetAxis("A")) > 0.2F || Mathf.Abs(Input.GetAxis("A")) > 0.2F;
 	//Quaternion origine;
         //rotation Droite Gauche
+		if (b_gachetteAr) {
+			rb.velocity = Vector3.zero;;
+			rb.angularVelocity = Vector3.zero;
+			Transform tf = RespawnProche (respawn);
+			transform.position = tf.position;
+			transform.rotation = tf.rotation;
+		}
+		
        Quaternion origine = transform.rotation;
 		cam.transform.parent.transform.rotation = transform.rotation = origine * Quaternion.AngleAxis(stick2hb/2+manetteRot*TurnSpeed, Vector3.up);
 
@@ -193,18 +206,10 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //Si l'objet est bien un pickUp l'efface mais le detruit pas
-        if (other.gameObject.CompareTag("PassageVallee1"))
-        {
-            PsgV1 = true;
-            activeMeteorSwarn1();
-        }
-        if (other.gameObject.CompareTag("PassageVallee1"))
-        {
-            PsgV2 = true;
-            activeMeteorSwarn2();
-        }
+       
         if (other.gameObject.CompareTag("Start") && !start)
         {
+			temps = 0;
             other.gameObject.SetActive(false);
             // temps = Time.realtimeSinceStartup;
             start = true;
@@ -213,6 +218,7 @@ public class PlayerController : MonoBehaviour
         }
         if (other.gameObject.CompareTag("Parcours") && start)
         {
+			malusTemps++;
             other.gameObject.SetActive(false);
             // temps = Time.realtimeSinceStartup;
             //  score++;
@@ -220,6 +226,11 @@ public class PlayerController : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("Finish") && start)
         {
+			malusTemps = NombreParcours - malusTemps;
+			temps = 5 * malusTemps + temps;
+			text.text = temps.ToString().Substring(0,5);
+			malusTemps = 0;
+			//Debug.Log ("Malus : " +malusTemps + " Temps " + temps);
             other.gameObject.SetActive(false);
             //  temps = temps - Time.realtimeSinceStartup;
             start = false;
@@ -235,6 +246,16 @@ public class PlayerController : MonoBehaviour
         }
         
     }
+	private void OnTriggerExit(Collider other)
+	{
+		if (other.tag == "Map") {
+			Transform tf = RespawnProche (respawn);
+			rb.velocity = Vector3.zero;
+			rb.angularVelocity = Vector3.zero;
+			transform.position = tf.position;
+			transform.rotation = tf.rotation;
+		}
+	}
     Transform RespawnProche(GameObject[] respawn)
     {
         Transform tmin = null;
@@ -250,17 +271,5 @@ public class PlayerController : MonoBehaviour
             }
         }
         return tmin;
-    }
-    void activeMeteorSwarn2()
-    {
-        
-        if(PsgV1 && PsgV2)
-        PluieMete2.SetActive(true);
-    }
-    void activeMeteorSwarn1()
-    {
-       
-        if (PsgV1 && PsgV2)
-            PluieMete.SetActive(true);
     }
 }

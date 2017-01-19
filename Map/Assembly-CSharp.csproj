@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{10CC4BFA-D7FC-8A14-18EB-2D676CC3292F}</ProjectGuid>
+    <ProjectGuid>{3D3C5AB4-546B-1D1E-AF32-A1BB5E103D34}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -93,6 +93,7 @@
      <Compile Include="Assets\3Dmodel\VolumetricLines\Scripts\VolumetricLineBehavior.cs" />
      <Compile Include="Assets\3Dmodel\VolumetricLines\Scripts\VolumetricLineStripBehavior.cs" />
      <Compile Include="Assets\3Dmodel\VolumetricLines\Scripts\VolumetricMultiLineBehavior.cs" />
+     <Compile Include="Assets\Script\ARDTest.cs" />
      <Compile Include="Assets\Script\AudioVaisseau.cs" />
      <Compile Include="Assets\Script\CamController.cs" />
      <Compile Include="Assets\Script\Hover.cs" />
@@ -100,9 +101,13 @@
      <Compile Include="Assets\Script\PlayerController.cs" />
      <Compile Include="Assets\Script\QuitOnClick.cs" />
      <Compile Include="Assets\Script\ResizeParticuleSystem.cs" />
+     <Compile Include="Assets\Script\SB.cs" />
+     <Compile Include="Assets\Script\SBTest.cs" />
+     <Compile Include="Assets\Script\Sabertooth.cs" />
      <Compile Include="Assets\Script\SelectOnInput.cs" />
      <Compile Include="Assets\Script\SerialManager.cs" />
      <Compile Include="Assets\Script\UnitySerialPort.cs" />
+     <Compile Include="Assets\Script\Utils.cs" />
      <Compile Include="Assets\fX\Fx Explosion Pack\Script\DestroyEffect.cs" />
      <Compile Include="Assets\fX\Fx Explosion Pack\Script\csLightControl.cs" />
      <Compile Include="Assets\fX\Mirza Beig\Particle Systems\_Common\Scripts\AnimatedLight.cs" />
@@ -170,7 +175,6 @@
      <None Include="Assets\3Dmodel\Free_Rocks\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAAPreset3.shader" />
      <None Include="Assets\3Dmodel\VolumetricLines\Shaders\VolumetricLineShaderAdditive.shader" />
      <None Include="Assets\3Dmodel\Free_Rocks\Standard Assets\Effects\ImageEffects\Shaders\FisheyeShader.shader" />
-     <None Include="Assets\3Dmodel\S_o_f\readme (instructions).txt" />
      <None Include="Assets\3Dmodel\CactusPack\Readme.txt" />
      <None Include="Assets\Standard Assets\Vehicles\Car\Shaders\DiffuseReflectiveShader.shader" />
      <None Include="Assets\3Dmodel\Free_Rocks\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Apply.shader" />
@@ -250,10 +254,7 @@
      <None Include="Assets\3Dmodel\Free_Rocks\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlurAndFlares.shader" />
      <None Include="Assets\3Dmodel\Free_Rocks\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendForBloom.shader" />
  <Reference Include="Assembly-UnityScript-firstpass">
- <HintPath>C:/Users/joris/Documents/GitHub/simulateurvr/Source/Map/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Advertisements">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Advertisements/UnityEngine.Advertisements.dll</HintPath>
+ <HintPath>C:/Users/joris/Desktop/Map - Copie/Library/ScriptAssemblies/Assembly-UnityScript-firstpass.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
@@ -270,16 +271,13 @@
  <Reference Include="UnityEngine.HoloLens">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
  </Reference>
- <Reference Include="UnityEngine.Purchasing">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityPurchasing/UnityEngine.Purchasing.dll</HintPath>
- </Reference>
  <Reference Include="UnityEngine.VR">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{A2834F79-00EE-5FB8-31DB-47B7A6DC9612}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+      <Project>{A19AD6E8-DC8A-0F92-A0E3-77243F9E0483}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
